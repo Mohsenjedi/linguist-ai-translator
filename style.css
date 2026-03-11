@@ -1,12 +1,12 @@
 :root {
-    --primary: #3b82f6;
-    --primary-glow: rgba(59, 130, 246, 0.5);
-    --secondary: #ef4444;
-    --bg-dark: #0f172a;
-    --glass-bg: rgba(255, 255, 255, 0.03);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
+    --primary: #10b981;
+    --primary-glow: rgba(16, 185, 129, 0.2);
+    --secondary: #059669;
+    --bg-dark: #f9fafb;
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(16, 185, 129, 0.1);
+    --text-main: #064e3b;
+    --text-muted: #6b7280;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -37,7 +37,7 @@ body {
     background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
     z-index: -1;
     filter: blur(80px);
-    opacity: 0.4;
+    opacity: 0.8;
 }
 
 .container {
@@ -107,7 +107,7 @@ h1 span {
     display: flex;
     align-items: center;
     gap: 1rem;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(16, 185, 129, 0.05);
     padding: 0.5rem 1.25rem;
     border-radius: 100px;
     border: 1px solid var(--glass-border);
@@ -146,7 +146,7 @@ h1 span {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.05);
     transition: .4s;
 }
 
