@@ -2,6 +2,9 @@
 
 MOHSEN is a premium, real-time voice and video translation tool designed for seamless communication between English and Finnish. It leverages the browser's native Speech Recognition API and MediaDevices API to provide a live-head-up translation experience.
 
+### 🚀 **[Try Live App Here](https://mohsenjedi.github.io/linguist-ai-translator/)**
+
+
 ![MOHSEN Logo](translator_logo_1773213429480.png)
 
 ## ✨ Key Features
