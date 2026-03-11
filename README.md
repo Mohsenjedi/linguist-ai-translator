@@ -11,7 +11,8 @@ MOHSEN is a premium, real-time voice and video translation tool designed for sea
 - **🎥 Live Video Feed**: Real-time webcam integration to see yourself or your surroundings while translating.
 - **💬 Cinematic Subtitles**: Translated text appears as elegant overlays directly on your video stream.
 - **🎤 Live Voice Input**: Listens and identifies speech in real-time with high accuracy.
-- **🔄 Bi-directional Support**: Seamlessly toggle between **English -> Finnish** and **Finnish -> English**.
+- **✍️ Manual Text Translation**: New section to type or paste text for instant translation.
+- **🔄 Multi-Language Support**: Seamlessly translate between **English**, **Finnish**, and **Persian (Farsi)**.
 - **🌿 Fresh Green & White Theme**: A modern, light-mode interface with glassmorphism effects.
 - **⚡ Low Latency**: Real-time feedback and interim results for an "instant" feel.
 

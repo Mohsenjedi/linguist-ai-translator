@@ -1,16 +1,25 @@
 const recordBtn = document.getElementById('record-btn');
-const modeToggle = document.getElementById('mode-toggle');
+const sourceLangSelect = document.getElementById('source-lang');
+const targetLangSelect = document.getElementById('target-lang');
+const swapBtn = document.getElementById('swap-langs');
+const textToTranslate = document.getElementById('text-to-translate');
+const textTranslateBtn = document.getElementById('text-translate-btn');
 const transcriptText = document.getElementById('transcript-text');
 const translatedText = document.getElementById('translated-text');
 const liveSubtitle = document.getElementById('live-subtitle');
 const webcamElement = document.getElementById('webcam');
 const statusDot = document.getElementById('status-dot');
 const statusText = document.getElementById('status-text');
-const labelEn = document.getElementById('label-en');
-const labelFi = document.getElementById('label-fi');
 
 let recognition;
 let isRecording = false;
+
+// Language Mapping for Speech Recognition
+const speechLangMap = {
+    'en': 'en-US',
+    'fi': 'fi-FI',
+    'fa': 'fa-IR'
+};
 
 // Initialize Webcam
 async function setupWebcam() {
@@ -81,14 +90,14 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
 }
 
 async function translate(text) {
-    const isFiToEn = modeToggle.checked;
-    const sourceLang = isFiToEn ? 'fi' : 'en';
-    const targetLang = isFiToEn ? 'en' : 'fi';
+    if (!text.trim()) return;
+
+    const sourceLang = sourceLangSelect.value;
+    const targetLang = targetLangSelect.value;
 
     statusText.textContent = 'Translating...';
     
     try {
-        // Using MyMemory API (Free, no key required for basic use)
         const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sourceLang}|${targetLang}`);
         const data = await response.json();
 
@@ -110,8 +119,7 @@ async function translate(text) {
 }
 
 function startRecording() {
-    const isFiToEn = modeToggle.checked;
-    recognition.lang = isFiToEn ? 'fi-FI' : 'en-US';
+    recognition.lang = speechLangMap[sourceLangSelect.value] || 'en-US';
     recognition.start();
 }
 
@@ -119,6 +127,7 @@ function stopRecording() {
     recognition.stop();
 }
 
+// Event Listeners
 recordBtn.addEventListener('click', () => {
     if (isRecording) {
         stopRecording();
@@ -127,31 +136,29 @@ recordBtn.addEventListener('click', () => {
     }
 });
 
-modeToggle.addEventListener('change', () => {
-    const isFiToEn = modeToggle.checked;
-    if (isFiToEn) {
-        labelEn.classList.remove('active');
-        labelFi.classList.add('active');
-    } else {
-        labelEn.classList.add('active');
-        labelFi.classList.remove('active');
+textTranslateBtn.addEventListener('click', () => {
+    const text = textToTranslate.value;
+    if (text) {
+        transcriptText.textContent = text;
+        transcriptText.classList.remove('placeholder');
+        translate(text);
     }
+});
+
+swapBtn.addEventListener('click', () => {
+    const temp = sourceLangSelect.value;
+    sourceLangSelect.value = targetLangSelect.value;
+    targetLangSelect.value = temp;
     
-    // Clear display on toggle
+    // Clear displays
     transcriptText.textContent = 'Your speech will appear here...';
     transcriptText.classList.add('placeholder');
     translatedText.textContent = 'Translation will appear here...';
     translatedText.classList.add('placeholder');
-    
+    liveSubtitle.textContent = 'Translation will appear here...';
+
     if (isRecording) {
         stopRecording();
-        setTimeout(startRecording, 300); // Restart with new language
+        setTimeout(startRecording, 300);
     }
 });
-
-// Set initial label state
-if (modeToggle.checked) {
-    labelFi.classList.add('active');
-} else {
-    labelEn.classList.add('active');
-}
