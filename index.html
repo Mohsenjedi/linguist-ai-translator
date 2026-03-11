@@ -82,14 +82,19 @@
             </div>
 
             <div class="content-area">
-                <div class="input-display">
-                    <h3>Listening...</h3>
-                    <p id="transcript-text" class="placeholder">Your speech will appear here...</p>
-                </div>
-                <div class="divider"></div>
-                <div class="output-display">
-                    <h3>Translated</h3>
-                    <p id="translated-text" class="placeholder">Translation will appear here...</p>
+                <div class="result-display">
+                    <div class="result-header">
+                        <span id="display-source-lang">Source</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        <span id="display-target-lang">Target</span>
+                    </div>
+                    <div class="result-body">
+                        <p id="translated-text" class="placeholder">Translation will appear here...</p>
+                        <div class="transcript-wrapper">
+                            <span class="transcript-label">Original:</span>
+                            <span id="transcript-text">...</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 

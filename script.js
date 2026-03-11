@@ -10,6 +10,8 @@ const liveSubtitle = document.getElementById('live-subtitle');
 const webcamElement = document.getElementById('webcam');
 const statusDot = document.getElementById('status-dot');
 const statusText = document.getElementById('status-text');
+const displaySourceLang = document.getElementById('display-source-lang');
+const displayTargetLang = document.getElementById('display-target-lang');
 
 let recognition;
 let isRecording = false;
@@ -21,6 +23,13 @@ const speechLangMap = {
     'fa': 'fa-IR',
     'de': 'de-DE'
 };
+
+const langNames = { 'en': 'English', 'fi': 'Finnish', 'fa': 'Persian', 'de': 'German' };
+
+function updateResultLabels(source, target) {
+    displaySourceLang.textContent = langNames[source] || source;
+    displayTargetLang.textContent = langNames[target] || target;
+}
 
 // Initialize Webcam
 async function setupWebcam() {
@@ -96,6 +105,7 @@ async function translate(text) {
     const sourceLang = sourceLangSelect.value;
     const targetLang = targetLangSelect.value;
 
+    updateResultLabels(sourceLang, targetLang);
     statusText.textContent = 'Translating...';
     
     try {
@@ -155,7 +165,7 @@ document.querySelectorAll('.quick-btn').forEach(btn => {
         const from = btn.getAttribute('data-from');
         const to = btn.getAttribute('data-to');
         
-        const langNames = { 'en': 'English', 'fi': 'Finnish', 'fa': 'Persian', 'de': 'German' };
+        updateResultLabels(from, to);
         statusText.textContent = `Translating to ${langNames[to] || to}...`;
         
         try {
