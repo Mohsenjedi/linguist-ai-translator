@@ -26,9 +26,13 @@ MOHSEN is a premium, real-time voice and video translation tool designed for sea
 
 ## 🚀 How to Use
 1. **Allow Permissions**: When prompted, allow Microphone and Camera access in your browser.
-2. **Select Direction**: Use the toggle switch to choose your source and target language.
-3. **Start Translating**: Click the large green "Start Translating" button.
-4. **Speak**: Your speech will appear in the transcript area, and the translation will appear as **subtitles on the video**.
+2. **Text Translator**:
+   - Type your text in the box at the top.
+   - Use the **Quick Buttons** (EN➔FI, EN➔FA, FI➔EN, FI➔FA) for instant translations.
+   - Or use "Translate Selected" to use your custom dropdown settings.
+3. **Voice Translator**:
+   - Select your languages from the dropdowns.
+   - Click the green "Start Translating" button and speak clearly.
 
 ## 📂 File Structure
 - `index.html`: Core structure and SEO-optimized markup.
