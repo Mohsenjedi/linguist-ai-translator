@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linguist AI | Real-time Translator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="background-glow"></div>
+
+    <main class="container">
+        <header>
+            <div class="logo-container">
+                <img src="translator_logo_1773213429480.png" alt="Linguist AI Logo" class="logo">
+                <h1>Linguist<span>AI</span></h1>
+            </div>
+            <p class="subtitle">Seamless voice-to-text translation</p>
+        </header>
+
+        <section class="translator-card">
+            <div class="controls">
+                <div class="toggle-container">
+                    <span class="lang-label" id="label-en">English</span>
+                    <label class="switch">
+                        <input type="checkbox" id="mode-toggle">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="lang-label" id="label-fi">Finnish</span>
+                </div>
+                <div class="status-indicator">
+                    <div id="status-dot" class="dot"></div>
+                    <span id="status-text">Ready</span>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="input-display">
+                    <h3>Listening...</h3>
+                    <p id="transcript-text" class="placeholder">Your speech will appear here...</p>
+                </div>
+                <div class="divider"></div>
+                <div class="output-display">
+                    <h3>Translated</h3>
+                    <p id="translated-text" class="placeholder">Translation will appear here...</p>
+                </div>
+            </div>
+
+            <div class="action-bar">
+                <button id="record-btn" class="record-btn">
+                    <div class="pulse-ring"></div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-mic">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                        <line x1="12" y1="19" x2="12" y2="23"></line>
+                        <line x1="8" y1="23" x2="16" y2="23"></line>
+                    </svg>
+                    <span>Start Translating</span>
+                </button>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2024 Linguist AI • Powered by Advanced Neural Networks</p>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
