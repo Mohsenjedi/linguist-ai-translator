@@ -1,8 +1,8 @@
-# Linguist AI | Real-time Voice Translator
+# Leo Messi | Real-time Voice Translator
 
-Linguist AI is a premium, real-time voice translation tool designed for seamless communication between English and Finnish. It leverages the browser's native Speech Recognition API for low-latency input and a high-performance translation engine for text output.
+Leo Messi is a premium, real-time voice translation tool designed for seamless communication between English and Finnish. It leverages the browser's native Speech Recognition API for low-latency input and a high-performance translation engine for text output.
 
-![Linguist AI Logo](translator_logo_1773213429480.png)
+![Leo Messi Logo](translator_logo_1773213429480.png)
 
 ## ✨ Key Features
 - **Live Voice Input**: Listens to speech in real-time.
