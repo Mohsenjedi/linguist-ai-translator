@@ -59,9 +59,16 @@
                 </div>
             </div>
 
-            <div class="text-input-area">
-                <textarea id="text-to-translate" placeholder="Type text here to translate manually..."></textarea>
-                <button id="text-translate-btn">Translate Text</button>
+            <div class="text-translator-section">
+                <h3>Text Translator</h3>
+                <div class="text-input-wrapper">
+                    <textarea id="text-to-translate" placeholder="Enter text to translate..."></textarea>
+                    <div class="quick-actions">
+                        <button class="quick-btn" data-from="en" data-to="fi" id="btn-en-fi">EN ➔ FI</button>
+                        <button class="quick-btn" data-from="fi" data-to="en" id="btn-fi-en">FI ➔ EN</button>
+                        <button id="text-translate-btn" class="main-translate-btn">Translate Selected</button>
+                    </div>
+                </div>
             </div>
 
             <div class="content-area">

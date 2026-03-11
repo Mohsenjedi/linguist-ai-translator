@@ -145,6 +145,36 @@ textTranslateBtn.addEventListener('click', () => {
     }
 });
 
+// Quick Action Buttons (EN <-> FI)
+document.querySelectorAll('.quick-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+        const text = textToTranslate.value;
+        if (!text) return;
+        
+        const from = btn.getAttribute('data-from');
+        const to = btn.getAttribute('data-to');
+        
+        statusText.textContent = `Translating to ${to === 'fi' ? 'Finnish' : 'English'}...`;
+        
+        try {
+            const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${from}|${to}`);
+            const data = await response.json();
+
+            if (data.responseData && data.responseData.translatedText) {
+                const result = data.responseData.translatedText;
+                transcriptText.textContent = text;
+                transcriptText.classList.remove('placeholder');
+                translatedText.textContent = result;
+                translatedText.classList.remove('placeholder');
+                liveSubtitle.textContent = result;
+                statusText.textContent = 'Translated';
+            }
+        } catch (error) {
+            console.error('Quick translation error:', error);
+        }
+    });
+});
+
 swapBtn.addEventListener('click', () => {
     const temp = sourceLangSelect.value;
     sourceLangSelect.value = targetLangSelect.value;
