@@ -2,6 +2,8 @@ const recordBtn = document.getElementById('record-btn');
 const modeToggle = document.getElementById('mode-toggle');
 const transcriptText = document.getElementById('transcript-text');
 const translatedText = document.getElementById('translated-text');
+const liveSubtitle = document.getElementById('live-subtitle');
+const webcamElement = document.getElementById('webcam');
 const statusDot = document.getElementById('status-dot');
 const statusText = document.getElementById('status-text');
 const labelEn = document.getElementById('label-en');
@@ -9,6 +11,19 @@ const labelFi = document.getElementById('label-fi');
 
 let recognition;
 let isRecording = false;
+
+// Initialize Webcam
+async function setupWebcam() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        webcamElement.srcObject = stream;
+    } catch (err) {
+        console.error("Error accessing webcam: ", err);
+        liveSubtitle.textContent = "Webcam access denied. Translation only.";
+    }
+}
+
+setupWebcam();
 
 // Initialize Speech Recognition
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
@@ -78,8 +93,10 @@ async function translate(text) {
         const data = await response.json();
 
         if (data.responseData && data.responseData.translatedText) {
-            translatedText.textContent = data.responseData.translatedText;
+            const result = data.responseData.translatedText;
+            translatedText.textContent = result;
             translatedText.classList.remove('placeholder');
+            liveSubtitle.textContent = result;
             statusText.textContent = 'Translated';
         } else {
             translatedText.textContent = 'Translation failed. Try again.';
