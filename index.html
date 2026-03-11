@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MOHSEN | Real-time Translator</title>
+    <title>MOHSEN | Real-time AI Translator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -20,101 +20,108 @@
                 <img src="translator_logo_1773213429480.png" alt="Linguist AI Logo" class="logo">
                 <h1>MOH<span>SEN</span></h1>
             </div>
-            <p class="subtitle">Seamless voice-to-text translation</p>
+            <p class="subtitle">AI-Powered Multi-Language Communication</p>
+            <div class="mode-toggle-container">
+                <button id="mode-en-fi" class="mode-tab active">EN ➔ FI</button>
+                <button id="mode-fi-en" class="mode-tab">FI ➔ EN</button>
+                <button id="mode-custom" class="mode-tab">Custom Mode</button>
+            </div>
         </header>
 
-        <section class="translator-card">
-            <div class="video-container">
-                <video id="webcam" autoplay playsinline></video>
-                <div class="subtitle-overlay">
-                    <p id="live-subtitle">Translation will appear here...</p>
-                </div>
-            </div>
-
-            <div class="controls">
-                <div class="language-selection">
-                    <div class="select-group">
-                        <label>From</label>
-                        <select id="source-lang">
-                            <option value="en">English</option>
-                            <option value="fi" selected>Finnish</option>
-                            <option value="fa">Persian</option>
-                            <option value="de">German</option>
-                        </select>
-                    </div>
-                    <button id="swap-langs" class="swap-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="8 21 3 21 3 16"></polyline><line x1="3" y1="21" x2="20" y2="4"></line></svg>
-                    </button>
-                    <div class="select-group">
-                        <label>To</label>
-                        <select id="target-lang">
-                            <option value="en">English</option>
-                            <option value="fi">Finnish</option>
-                            <option value="fa" selected>Persian</option>
-                            <option value="de">German</option>
-                        </select>
-                    </div>
-                    <button id="text-translate-btn" class="text-translate-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-                        <span>Translate</span>
-                    </button>
-                </div>
-                <div class="status-indicator">
-                    <div id="status-dot" class="dot"></div>
-                    <span id="status-text">Ready</span>
-                </div>
-            </div>
-
-            <div class="text-translator-section">
-                <h3>Text Translator</h3>
-                <div class="text-input-wrapper">
-                    <textarea id="text-to-translate" placeholder="Enter text to translate..."></textarea>
-                    <div class="quick-actions">
-                        <button class="quick-btn" data-from="en" data-to="fi">EN ➔ FI</button>
-                        <button class="quick-btn" data-from="en" data-to="fa">EN ➔ FA</button>
-                        <button class="quick-btn" data-from="en" data-to="de">EN ➔ DE</button>
-                        <button class="quick-btn" data-from="fi" data-to="en">FI ➔ EN</button>
-                        <button class="quick-btn" data-from="fi" data-to="fa">FI ➔ FA</button>
-                        <button class="quick-btn" data-from="fi" data-to="de">FI ➔ DE</button>
-                        <button class="quick-btn" data-from="de" data-to="en">DE ➔ EN</button>
-                        <button class="quick-btn" data-from="de" data-to="fi">DE ➔ FI</button>
-                        <button class="quick-btn" data-from="de" data-to="fa">DE ➔ FA</button>
-                        <button class="quick-btn" data-from="fa" data-to="de">FA ➔ DE</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="content-area">
-                <div class="result-display">
-                    <div class="result-header">
-                        <span id="display-source-lang">Source</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                        <span id="display-target-lang">Target</span>
-                    </div>
-                    <div class="result-body">
-                        <p id="translated-text" class="placeholder">Translation will appear here...</p>
-                        <div class="transcript-wrapper">
-                            <span class="transcript-label">Original:</span>
-                            <span id="transcript-text">...</span>
+        <section class="main-grid">
+            <div class="translator-side">
+                <section class="translator-card">
+                    <div class="video-container">
+                        <video id="webcam" autoplay playsinline></video>
+                        <div class="subtitle-overlay">
+                            <p id="live-subtitle">Translation will appear here...</p>
                         </div>
                     </div>
-                </div>
+
+                    <div class="controls">
+                        <div class="language-selection" id="custom-controls" style="display: none;">
+                            <div class="select-group">
+                                <label>From</label>
+                                <select id="source-lang">
+                                    <option value="en" selected>English</option>
+                                    <option value="fi">Finnish</option>
+                                    <option value="de">German</option>
+                                    <option value="fa">Persian</option>
+                                </select>
+                            </div>
+                            <button id="swap-langs" class="swap-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="8 21 3 21 3 16"></polyline><line x1="3" y1="21" x2="20" y2="4"></line></svg>
+                            </button>
+                            <div class="select-group">
+                                <label>To</label>
+                                <select id="target-lang">
+                                    <option value="en">English</option>
+                                    <option value="fi" selected>Finnish</option>
+                                    <option value="de">German</option>
+                                    <option value="fa">Persian</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="active-mode-display">
+                            <span id="active-mode-text">English ➔ Finnish</span>
+                        </div>
+                        <div class="status-indicator">
+                            <div id="status-dot" class="dot"></div>
+                            <span id="status-text">Ready</span>
+                        </div>
+                    </div>
+
+                    <div class="content-area">
+                        <div class="input-container">
+                            <h3>Listening...</h3>
+                            <p id="transcript-text" class="placeholder">Your speech will appear here...</p>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="output-container">
+                            <h3>Translated</h3>
+                            <p id="translated-text" class="placeholder">Translation will appear here...</p>
+                        </div>
+                    </div>
+
+                    <div class="action-bar">
+                        <button id="record-btn" class="record-btn">
+                            <div class="pulse-ring"></div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                            <span>Start Listening</span>
+                        </button>
+                    </div>
+                </section>
+
+                <section class="text-translator-section">
+                    <div class="section-header">
+                        <h3>Text Translator</h3>
+                    </div>
+                    <div class="text-input-wrapper">
+                        <textarea id="text-to-translate" placeholder="Enter text to translate..."></textarea>
+                        <div class="quick-actions">
+                            <button class="quick-btn" data-from="en" data-to="fi">EN ➔ FI</button>
+                            <button class="quick-btn" data-from="fi" data-to="en">FI ➔ EN</button>
+                            <button class="quick-btn" data-from="en" data-to="de">EN ➔ DE</button>
+                            <button class="quick-btn" data-from="de" data-to="en">DE ➔ EN</button>
+                            <button id="text-translate-btn" class="main-translate-btn">Translate Selected</button>
+                        </div>
+                    </div>
+                </section>
             </div>
 
-            <div class="action-bar">
-                <button id="record-btn" class="record-btn">
-                    <div class="pulse-ring"></div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="feather feather-mic">
-                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                        <line x1="12" y1="19" x2="12" y2="23"></line>
-                        <line x1="8" y1="23" x2="16" y2="23"></line>
-                    </svg>
-                    <span>Start Translating</span>
-                </button>
-            </div>
+            <aside class="history-side">
+                <div class="history-card">
+                    <div class="history-header">
+                        <h3>Conversation History</h3>
+                        <button id="clear-history" class="icon-btn" title="Clear All">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
+                    </div>
+                    <div id="history-list" class="history-list">
+                        <div class="empty-state">No recent translations</div>
+                    </div>
+                </div>
+            </aside>
         </section>
 
         <footer>

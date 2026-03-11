@@ -10,11 +10,16 @@ const liveSubtitle = document.getElementById('live-subtitle');
 const webcamElement = document.getElementById('webcam');
 const statusDot = document.getElementById('status-dot');
 const statusText = document.getElementById('status-text');
-const displaySourceLang = document.getElementById('display-source-lang');
-const displayTargetLang = document.getElementById('display-target-lang');
+const modeTabs = document.querySelectorAll('.mode-tab');
+const activeModeText = document.getElementById('active-mode-text');
+const customControls = document.getElementById('custom-controls');
+const historyList = document.getElementById('history-list');
+const clearHistoryBtn = document.getElementById('clear-history');
 
 let recognition;
 let isRecording = false;
+let currentMode = 'en-fi'; // Default mode
+let history = JSON.parse(localStorage.getItem('translationHistory')) || [];
 
 // Language Mapping for Speech Recognition
 const speechLangMap = {
@@ -26,10 +31,11 @@ const speechLangMap = {
 
 const langNames = { 'en': 'English', 'fi': 'Finnish', 'fa': 'Persian', 'de': 'German' };
 
-function updateResultLabels(source, target) {
-    displaySourceLang.textContent = langNames[source] || source;
-    displayTargetLang.textContent = langNames[target] || target;
-}
+const modeConfigs = {
+    'en-fi': { from: 'en', to: 'fi', label: 'English ➔ Finnish' },
+    'fi-en': { from: 'fi', to: 'en', label: 'Finnish ➔ English' },
+    'custom': { useSelects: true, label: 'Custom Mode' }
+};
 
 // Initialize Webcam
 async function setupWebcam() {
@@ -44,7 +50,40 @@ async function setupWebcam() {
 
 setupWebcam();
 
-// Initialize Speech Recognition
+// History Management
+function saveToHistory(original, translated, from, to) {
+    if (!original.trim() || !translated.trim()) return;
+    const entry = {
+        id: Date.now(),
+        original,
+        translated,
+        from: langNames[from] || from,
+        to: langNames[to] || to,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+    history.unshift(entry);
+    if (history.length > 20) history.pop();
+    localStorage.setItem('translationHistory', JSON.stringify(history));
+    renderHistory();
+}
+
+function renderHistory() {
+    if (history.length === 0) {
+        historyList.innerHTML = '<div class="empty-state">No recent translations</div>';
+        return;
+    }
+    historyList.innerHTML = history.map(entry => `
+        <div class="history-item">
+            <span class="history-lang-pair">${entry.from} ➔ ${entry.to} <small style="float:right; opacity:0.5">${entry.timestamp}</small></span>
+            <p class="history-original">${entry.original}</p>
+            <p class="history-translated">${entry.translated}</p>
+        </div>
+    `).join('');
+}
+
+renderHistory();
+
+// Speech Recognition Init
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     recognition = new SpeechRecognition();
@@ -62,7 +101,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     recognition.onend = () => {
         isRecording = false;
         recordBtn.classList.remove('recording');
-        recordBtn.querySelector('span').textContent = 'Start Translating';
+        recordBtn.querySelector('span').textContent = 'Start Listening';
         statusDot.classList.remove('pulse');
         statusText.textContent = 'Ready';
     };
@@ -92,20 +131,22 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     recognition.onerror = (event) => {
         console.error('Speech recognition error', event.error);
         statusText.textContent = 'Error: ' + event.error;
-        statusDot.classList.add('inactive');
         stopRecording();
     };
-} else {
-    alert('Speech Recognition API is not supported in this browser. Please use Chrome or Edge.');
 }
 
 async function translate(text) {
     if (!text.trim()) return;
 
-    const sourceLang = sourceLangSelect.value;
-    const targetLang = targetLangSelect.value;
+    let sourceLang, targetLang;
+    if (currentMode === 'custom') {
+        sourceLang = sourceLangSelect.value;
+        targetLang = targetLangSelect.value;
+    } else {
+        sourceLang = modeConfigs[currentMode].from;
+        targetLang = modeConfigs[currentMode].to;
+    }
 
-    updateResultLabels(sourceLang, targetLang);
     statusText.textContent = 'Translating...';
     
     try {
@@ -118,24 +159,51 @@ async function translate(text) {
             translatedText.classList.remove('placeholder');
             liveSubtitle.textContent = result;
             statusText.textContent = 'Translated';
+            saveToHistory(text, result, sourceLang, targetLang);
         } else {
-            translatedText.textContent = 'Translation failed. Try again.';
+            translatedText.textContent = 'Translation failed.';
         }
     } catch (error) {
         console.error('Translation error:', error);
-        translatedText.textContent = 'Network error. Please check connection.';
+        translatedText.textContent = 'Network error.';
     } finally {
         if (isRecording) statusText.textContent = 'Listening...';
     }
 }
 
 function startRecording() {
-    recognition.lang = speechLangMap[sourceLangSelect.value] || 'en-US';
+    let sourceLang;
+    if (currentMode === 'custom') {
+        sourceLang = sourceLangSelect.value;
+    } else {
+        sourceLang = modeConfigs[currentMode].from;
+    }
+    
+    recognition.lang = speechLangMap[sourceLang] || 'en-US';
     recognition.start();
 }
 
 function stopRecording() {
     recognition.stop();
+}
+
+function setMode(modeId) {
+    modeTabs.forEach(tab => tab.classList.toggle('active', tab.id === `mode-${modeId}`));
+    currentMode = modeId;
+    
+    if (modeConfigs[modeId].useSelects) {
+        customControls.style.display = 'flex';
+        activeModeText.style.display = 'none';
+    } else {
+        customControls.style.display = 'none';
+        activeModeText.style.display = 'block';
+        activeModeText.textContent = modeConfigs[modeId].label;
+    }
+
+    if (isRecording) {
+        stopRecording();
+        setTimeout(startRecording, 300);
+    }
 }
 
 // Event Listeners
@@ -147,31 +215,30 @@ recordBtn.addEventListener('click', () => {
     }
 });
 
-textTranslateBtn.addEventListener('click', () => {
-    const text = textToTranslate.value;
-    if (text) {
-        transcriptText.textContent = text;
-        transcriptText.classList.remove('placeholder');
-        translate(text);
-    }
+modeTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        const modeId = tab.id.replace('mode-', '');
+        setMode(modeId);
+    });
 });
 
-// Quick Action Buttons
+clearHistoryBtn.addEventListener('click', () => {
+    history = [];
+    localStorage.removeItem('translationHistory');
+    renderHistory();
+});
+
 document.querySelectorAll('.quick-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
         const text = textToTranslate.value;
         if (!text) return;
-        
         const from = btn.getAttribute('data-from');
         const to = btn.getAttribute('data-to');
-        
-        updateResultLabels(from, to);
-        statusText.textContent = `Translating to ${langNames[to] || to}...`;
+        statusText.textContent = `Translating...`;
         
         try {
             const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${from}|${to}`);
             const data = await response.json();
-
             if (data.responseData && data.responseData.translatedText) {
                 const result = data.responseData.translatedText;
                 transcriptText.textContent = text;
@@ -180,25 +247,23 @@ document.querySelectorAll('.quick-btn').forEach(btn => {
                 translatedText.classList.remove('placeholder');
                 liveSubtitle.textContent = result;
                 statusText.textContent = 'Translated';
+                saveToHistory(text, result, from, to);
             }
         } catch (error) {
-            console.error('Quick translation error:', error);
+            console.error(error);
         }
     });
+});
+
+textTranslateBtn.addEventListener('click', () => {
+    const text = textToTranslate.value;
+    if (text) translate(text);
 });
 
 swapBtn.addEventListener('click', () => {
     const temp = sourceLangSelect.value;
     sourceLangSelect.value = targetLangSelect.value;
     targetLangSelect.value = temp;
-    
-    // Clear displays
-    transcriptText.textContent = 'Your speech will appear here...';
-    transcriptText.classList.add('placeholder');
-    translatedText.textContent = 'Translation will appear here...';
-    translatedText.classList.add('placeholder');
-    liveSubtitle.textContent = 'Translation will appear here...';
-
     if (isRecording) {
         stopRecording();
         setTimeout(startRecording, 300);
