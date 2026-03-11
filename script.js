@@ -18,7 +18,8 @@ let isRecording = false;
 const speechLangMap = {
     'en': 'en-US',
     'fi': 'fi-FI',
-    'fa': 'fa-IR'
+    'fa': 'fa-IR',
+    'de': 'de-DE'
 };
 
 // Initialize Webcam
@@ -145,7 +146,7 @@ textTranslateBtn.addEventListener('click', () => {
     }
 });
 
-// Quick Action Buttons (EN <-> FI)
+// Quick Action Buttons
 document.querySelectorAll('.quick-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
         const text = textToTranslate.value;
@@ -154,7 +155,8 @@ document.querySelectorAll('.quick-btn').forEach(btn => {
         const from = btn.getAttribute('data-from');
         const to = btn.getAttribute('data-to');
         
-        statusText.textContent = `Translating to ${to === 'fi' ? 'Finnish' : 'English'}...`;
+        const langNames = { 'en': 'English', 'fi': 'Finnish', 'fa': 'Persian', 'de': 'German' };
+        statusText.textContent = `Translating to ${langNames[to] || to}...`;
         
         try {
             const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${from}|${to}`);
