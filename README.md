@@ -1,8 +1,8 @@
-# Leo Messi | Real-time Voice & Video Translator
+# MOHSEN | Real-time Voice & Video Translator
 
-Leo Messi is a premium, real-time voice and video translation tool designed for seamless communication between English and Finnish. It leverages the browser's native Speech Recognition API and MediaDevices API to provide a live-head-up translation experience.
+MOHSEN is a premium, real-time voice and video translation tool designed for seamless communication between English and Finnish. It leverages the browser's native Speech Recognition API and MediaDevices API to provide a live-head-up translation experience.
 
-![Leo Messi Logo](translator_logo_1773213429480.png)
+![MOHSEN Logo](translator_logo_1773213429480.png)
 
 ## ✨ Key Features
 - **🎥 Live Video Feed**: Real-time webcam integration to see yourself or your surroundings while translating.
